@@ -1,22 +1,25 @@
 {
-  "name": "kubota-offline-portal",
+  "name": "kubota-portal",
   "version": "1.0.0",
-  "description": "Kubota Agricultural Machinery India - 100% Offline Website Mirror & Reconstruction",
-  "main": "index.html",
+  "description": "Kubota Agricultural Machinery India - Node.js Website",
+  "main": "server.js",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx serve .",
-    "preview": "npx http-server . -p 8080",
-    "build": "node scripts/rebuild-all.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "preview": "node server.js",
+    "build": "echo 'No build step needed - website served by Express'"
   },
   "keywords": [
     "kubota",
-    "offline-website",
-    "website-mirror",
-    "html5",
-    "digital-archive",
-    "offline-portal"
+    "tractors",
+    "agricultural-machinery",
+    "nodejs",
+    "express"
   ],
-  "author": "Kubota Offline Portal Contributors",
-  "license": "MIT"
+  "author": "Kubota Portal Contributors",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "@supabase/supabase-js": "^2.45.4"
+  }
 }

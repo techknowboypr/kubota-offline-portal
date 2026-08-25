@@ -1,0 +1,218 @@
+/* Kubota Portal - Functional UI Styles */
+
+/* Search results dropdown */
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.15);
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 9999;
+  display: none;
+}
+.search-results.active { display: block; }
+.search-result-item {
+  display: block;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  text-decoration: none;
+  color: #1a1a1a;
+  transition: background .15s;
+}
+.search-result-item:hover { background: #fff5f0; }
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f26522;
+  margin: 0 0 2px;
+}
+.search-result-item p {
+  font-size: 12px;
+  color: #777;
+  margin: 0;
+}
+.search-no-results {
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+/* Dealer locator form */
+.dealer-form select {
+  cursor: pointer;
+  appearance: auto;
+}
+.dealer-form select:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.dealer-result {
+  margin-top: 20px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  display: none;
+}
+.dealer-result.active { display: block; }
+.dealer-result h3 {
+  color: #f26522;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+.dealer-result p { color: #555; margin-bottom: 6px; }
+
+/* Contact modal */
+.contact-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+.contact-modal-overlay.active { display: flex; }
+.contact-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px rgba(0,0,0,.25);
+}
+.contact-modal h2 {
+  font-size: 1.5rem;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+.contact-modal .modal-subtitle {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.contact-modal .form-group {
+  margin-bottom: 16px;
+}
+.contact-modal label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 4px;
+}
+.contact-modal input,
+.contact-modal select,
+.contact-modal textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color .2s;
+}
+.contact-modal input:focus,
+.contact-modal select:focus,
+.contact-modal textarea:focus {
+  border-color: #f26522;
+  outline: none;
+}
+.contact-modal textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.contact-modal .modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.contact-modal .btn-submit {
+  flex: 1;
+  background: #f26522;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s;
+}
+.contact-modal .btn-submit:hover { background: #d85213; }
+.contact-modal .btn-submit:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+.contact-modal .btn-cancel {
+  background: #f0f0f0;
+  color: #555;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.contact-modal .btn-cancel:hover { background: #e5e5e5; }
+.contact-modal .modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+}
+.contact-modal .modal-close:hover { color: #333; }
+.contact-modal .form-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
+  display: none;
+}
+.contact-modal .form-message.success {
+  display: block;
+  background: #e6f9ee;
+  color: #1a7a3a;
+  border: 1px solid #b3e6c4;
+}
+.contact-modal .form-message.error {
+  display: block;
+  background: #fee;
+  color: #c33;
+  border: 1px solid #fcc;
+}
+
+/* Notification toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1a1a2e;
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  z-index: 10001;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform .3s, opacity .3s;
+}
+.toast.active { transform: translateY(0); opacity: 1; }
+.toast.success { background: #1a7a3a; }
+.toast.error { background: #c33; }
