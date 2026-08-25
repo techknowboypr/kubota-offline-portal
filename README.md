@@ -3,7 +3,7 @@
 <div align="center">
 
 ![Offline Ready](https://img.shields.io/badge/Offline-100%25%20Ready-brightgreen?style=for-the-badge&logo=offline)
-![Bilingual](https://img.shields.io/badge/Language-English%20%7C%20Hindi-orange?style=for-the-badge)
+![Language](https://img.shields.io/badge/Language-English-orange?style=for-the-badge)
 ![HTML5 / Next.js](https://img.shields.io/badge/Tech-HTML5%20%7C%20CSS3%20%7C%20JS-blue?style=for-the-badge)
 ![Zero Remote Dependencies](https://img.shields.io/badge/Remote%20Requests-0%20(Zero)-success?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey?style=for-the-badge)
@@ -27,7 +27,7 @@
 
 This repository provides a complete, high-fidelity offline mirror and portal for **Kubota Agricultural Machinery India** (`https://kubota.escortskubota.com/`).
 
-It enables full local exploration of Kubota's tractor lineups (**MU Series**, **L Series**, **NeoStar Series**), technical specifications, downloadable brochures, bilingual portals (English & Hindi), and the interactive **3D Virtual Showroom** without requiring an active internet connection or external CDN dependencies.
+It enables full local exploration of Kubota's tractor lineups (**MU Series**, **L Series**, **NeoStar Series**), technical specifications, downloadable brochures, and the interactive **3D Virtual Showroom** without requiring an active internet connection or external CDN dependencies.
 
 ---
 
@@ -71,7 +71,6 @@ Right-click `index.html` or `START_OFFLINE.html` in Visual Studio Code and selec
   - **MU Series**: MU4501 (2WD/4WD), MU5502 (2WD/4WD), MU5002, MU4201.
   - **L Series**: L3408, L4508.
   - **NeoStar Series**: A211N, B2441, B2741S.
-- 🇮🇳 **Bilingual Portal**: Complete English and Hindi (`/hi`) product portals and localization assets.
 - 🕶️ **3D Virtual Showroom**: Interactive 360° panorama tour powered by Pano2VR, WebXR polyfills, and three.js.
 - 📄 **Offline PDF Brochures**: High-resolution specification sheets and catalogs stored under `images/brochure/kubota/`.
 - ⚡ **Optimized Asset Pipeline**: Next.js optimized image URLs (`/_next/image?url=...`) are de-obfuscated to clean relative local paths.
@@ -96,14 +95,13 @@ Right-click `index.html` or `START_OFFLINE.html` in Visual Studio Code and selec
 │   └── virtual-showroom/         # Pano2VR, Three.js, and Showroom video media
 ├── data/
 │   └── dealer-states.json        # Offline dealer directory dataset
-├── html/                         # 49 fully reconstructed offline HTML pages
+├── html/                         # 25 fully reconstructed offline HTML pages
 │   ├── index.html                # Main English portal
-│   ├── hi.html                   # Hindi portal
 │   ├── virtual-showroom.html     # 3D interactive virtual showroom
 │   ├── mu-series.html            # MU Series category page
 │   ├── l-series.html             # L Series category page
 │   ├── neostar-series.html       # NeoStar Series category page
-│   └── ...                       # Individual tractor models (English & Hindi)
+│   └── ...                       # Individual tractor model pages
 ├── images/
 │   ├── kubota/                   # Product imagery, banners, and thumbnails
 │   ├── brochure/kubota/          # Downloadable PDF brochures
@@ -170,7 +168,7 @@ This repository is pre-configured with a GitHub Actions workflow for zero-touch 
 ## 📊 Audit & Quality Assurance
 
 As verified by `_logs/manifest.json` and automated validation tests:
-- **Total HTML Pages**: 49
+- **Total HTML Pages**: 25
 - **Total Local Images**: 361
 - **Total Local Assets**: 63
 - **Missing Images**: `0`
