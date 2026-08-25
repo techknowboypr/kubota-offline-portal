@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
+const https = require("https");
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
@@ -13,14 +14,82 @@ const supabase = supabaseUrl && supabaseKey
   ? createClient(supabaseUrl, supabaseKey)
   : null;
 
+// ---- Original site URLs for image proxying ----
+const SITE = "https://kubota.escortskubota.com";
+const CORPAPI = "https://corpapi.escortskubota.com";
+const STATIC = "https://static.escortskubota.com";
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ---- Static assets ----
-app.use("/images", express.static(path.join(ROOT, "images")));
+// ---- Static assets (non-image) ----
 app.use("/assets", express.static(path.join(ROOT, "assets")));
 app.use("/_next", express.static(path.join(ROOT, "_next")));
 app.use("/data", express.static(path.join(ROOT, "data")));
+
+// ---- Image proxy: fetch from origin servers and cache to disk ----
+function originForImagePath(localPath) {
+  // localPath is like "images/kubota/banners/foo.jpg" (no leading slash)
+  if (localPath.startsWith("images/kubota/") || localPath.startsWith("images/brochure/"))
+    return CORPAPI + "/" + localPath;
+  if (localPath.startsWith("images/static/"))
+    return STATIC + "/" + localPath.replace("images/static/", "");
+  if (localPath.startsWith("images/icons/"))
+    return SITE + "/" + localPath.replace("images/", "");
+  if (localPath === "images/logo.png") return SITE + "/logo.png";
+  if (localPath === "images/favicon.ico") return SITE + "/favicon.ico";
+  if (localPath.startsWith("images/virtual-showroom/"))
+    return SITE + "/" + localPath.replace("images/", "");
+  return SITE + "/" + localPath;
+}
+
+function fetchImage(url) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, { timeout: 15000, headers: { "User-Agent": "Mozilla/5.0" } }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        const newUrl = res.headers.location.startsWith("http")
+          ? res.headers.location
+          : new URL(res.headers.location, url).href;
+        return fetchImage(newUrl).then(resolve).catch(reject);
+      }
+      if (res.statusCode !== 200) {
+        res.resume();
+        return reject(new Error("HTTP " + res.statusCode));
+      }
+      const chunks = [];
+      res.on("data", d => chunks.push(d));
+      res.on("end", () => resolve({ buffer: Buffer.concat(chunks), contentType: res.headers["content-type"] }));
+    });
+    req.on("error", reject);
+    req.on("timeout", () => req.destroy());
+  });
+}
+
+app.use("/images", (req, res) => {
+  const localPath = "images" + req.path;
+  const diskPath = path.join(ROOT, localPath);
+
+  // If file exists on disk, serve it directly
+  if (fs.existsSync(diskPath) && fs.statSync(diskPath).size > 0) {
+    return res.sendFile(diskPath);
+  }
+
+  // Otherwise fetch from origin and cache
+  const originUrl = originForImagePath(localPath);
+  fetchImage(originUrl)
+    .then(({ buffer, contentType }) => {
+      // Save to disk for future requests
+      fs.mkdirSync(path.dirname(diskPath), { recursive: true });
+      fs.writeFileSync(diskPath, buffer);
+      res.type(contentType || "image/jpeg");
+      res.send(buffer);
+    })
+    .catch(() => {
+      // Return a transparent 1x1 pixel as fallback
+      const pixel = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0CAAAAASUVORK5CYII=", "base64");
+      res.type("image/png").send(pixel);
+    });
+});
 
 // ---- Clean URL route mapping ----
 const routes = {
@@ -50,12 +119,39 @@ const routes = {
   "/neostar-series/neostar-b2741s-narrow": "neostar-series__neostar-b2741s-narrow.html",
 };
 
-// ---- Helper: inject active JS into HTML ----
-function injectScripts(html) {
-  const scriptTag = `
-<link rel="stylesheet" href="/assets/app.css">
-<script src="/assets/app.js" defer></script>`;
-  return html.replace("</head>", scriptTag + "\n</head>");
+// ---- Helper: rewrite paths and inject scripts server-side ----
+function processHtml(html) {
+  // Fix image src paths: ../images/ -> /images/
+  html = html.replace(/src="\.\.\/images\//g, 'src="/images/');
+  // Fix srcset paths
+  html = html.replace(/srcset="([^"]*)"/g, (m, srcset) => {
+    return 'srcset="' + srcset.replace(/\.\.\/images\//g, "/images/") + '"';
+  });
+  // Fix favicon/icon links
+  html = html.replace(/href="\.\.\/images\//g, 'href="/images/');
+  // Fix inline style background urls
+  html = html.replace(/\.\.\/images\//g, "/images/");
+
+  // Rewrite internal links to clean URLs
+  const linkMap = {
+    "index.html": "/",
+    "mu-series.html": "/mu-series",
+    "l-series.html": "/l-series",
+    "neostar-series.html": "/neostar-series",
+  };
+  for (const [old, clean] of Object.entries(linkMap)) {
+    html = html.replace(new RegExp('href="' + old.replace(/\./g, "\\.") + '"', "g"), 'href="' + clean + '"');
+  }
+  // Product page links: mu-series__mu4201-2wd.html -> /mu-series/mu4201-2wd
+  html = html.replace(/href="(mu-series|l-series|neostar-series)__([^"]+?)\.html"/g, (m, series, slug) => {
+    return 'href="/' + series + "/" + slug + '"';
+  });
+
+  // Inject our CSS and JS
+  const scriptTag = '\n<link rel="stylesheet" href="/assets/app.css">\n<script src="/assets/app.js" defer></script>';
+  html = html.replace("</head>", scriptTag + "\n</head>");
+
+  return html;
 }
 
 // ---- Page routes ----
@@ -64,7 +160,7 @@ for (const [route, file] of Object.entries(routes)) {
     const filePath = path.join(ROOT, "html", file);
     if (!fs.existsSync(filePath)) return res.status(404).send("Page not found");
     let html = fs.readFileSync(filePath, "utf8");
-    html = injectScripts(html);
+    html = processHtml(html);
     res.type("html").send(html);
   });
 }
@@ -136,13 +232,12 @@ app.post("/api/contact", async (req, res) => {
 
 // ---- Fallback: serve other html files from /html ----
 app.get("*", (req, res) => {
-  // Try to serve as a static html file
   const reqPath = req.path;
   if (reqPath.endsWith(".html")) {
     const filePath = path.join(ROOT, "html", path.basename(reqPath));
     if (fs.existsSync(filePath)) {
       let html = fs.readFileSync(filePath, "utf8");
-      html = injectScripts(html);
+      html = processHtml(html);
       return res.type("html").send(html);
     }
   }

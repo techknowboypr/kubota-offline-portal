@@ -38,72 +38,6 @@
     }, 3500);
   }
 
-  // ---- Rewrite links to clean URLs ----
-  function rewriteLinks() {
-    var linkMap = {
-      "index.html": "/",
-      "mu-series.html": "/mu-series",
-      "l-series.html": "/l-series",
-      "neostar-series.html": "/neostar-series",
-      "mu-series__mu4201-2wd.html": "/mu-series/mu4201-2wd",
-      "mu-series__mu4201-4wd.html": "/mu-series/mu4201-4wd",
-      "mu-series__mu4501-2wd.html": "/mu-series/mu4501-2wd",
-      "mu-series__mu4501-4wd.html": "/mu-series/mu4501-4wd",
-      "mu-series__mu4502-2wd.html": "/mu-series/mu4502-2wd",
-      "mu-series__mu4502-4wd.html": "/mu-series/mu4502-4wd",
-      "mu-series__mu5002-2wd.html": "/mu-series/mu5002-2wd",
-      "mu-series__mu5002-4wd.html": "/mu-series/mu5002-4wd",
-      "mu-series__mu5502-2wd.html": "/mu-series/mu5502-2wd",
-      "mu-series__mu5502-4wd.html": "/mu-series/mu5502-4wd",
-      "l-series__kubota-l3408.html": "/l-series/kubota-l3408",
-      "l-series__kubota-l4508.html": "/l-series/kubota-l4508",
-      "neostar-series__neostar-a211n.html": "/neostar-series/neostar-a211n",
-      "neostar-series__neostar-a211n-op.html": "/neostar-series/neostar-a211n-op",
-      "neostar-series__neostar-a211s.html": "/neostar-series/neostar-a211s",
-      "neostar-series__neostar-b2441.html": "/neostar-series/neostar-b2441",
-      "neostar-series__neostar-b2441n.html": "/neostar-series/neostar-b2441n",
-      "neostar-series__neostar-b2441s-narrow.html": "/neostar-series/neostar-b2441s-narrow",
-      "neostar-series__neostar-b2741s.html": "/neostar-series/neostar-b2741s",
-      "neostar-series__neostar-b2741s-narrow.html": "/neostar-series/neostar-b2741s-narrow",
-    };
-    document.querySelectorAll('a[href]').forEach(function (a) {
-      var href = a.getAttribute("href");
-      if (linkMap[href]) {
-        a.setAttribute("href", linkMap[href]);
-      }
-    });
-  }
-
-  // ---- Fix image paths (../images/ -> /images/) ----
-  function fixImagePaths() {
-    document.querySelectorAll('img[src]').forEach(function (img) {
-      var src = img.getAttribute("src");
-      if (src && src.startsWith("../images/")) {
-        img.setAttribute("src", src.replace("../images/", "/images/"));
-      }
-    });
-    document.querySelectorAll('img[srcset]').forEach(function (img) {
-      var srcset = img.getAttribute("srcset");
-      if (srcset && srcset.indexOf("../images/") !== -1) {
-        img.setAttribute("srcset", srcset.replace(/\.\.\/images\//g, "/images/"));
-      }
-    });
-    // Fix favicon
-    document.querySelectorAll('link[href]').forEach(function (link) {
-      var href = link.getAttribute("href");
-      if (href && href.startsWith("../images/")) {
-        link.setAttribute("href", href.replace("../images/", "/images/"));
-      }
-    });
-    // Fix bg url in inline styles
-    document.querySelectorAll('[style]').forEach(function (el) {
-      var style = el.getAttribute("style");
-      if (style && style.indexOf("../images/") !== -1) {
-        el.setAttribute("style", style.replace(/\.\.\/images\//g, "/images/"));
-      }
-    });
-  }
-
   // ---- Search functionality ----
   function initSearch() {
     var searchForms = document.querySelectorAll('form');
@@ -337,8 +271,6 @@
 
   // ---- Init everything ----
   function init() {
-    rewriteLinks();
-    fixImagePaths();
     initSearch();
     initDealerLocator();
     initContactModal();
