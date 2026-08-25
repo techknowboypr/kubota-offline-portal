@@ -1,0 +1,25 @@
+{
+  "name": "kubota-offline-portal",
+  "version": "1.0.0",
+  "description": "Kubota Agricultural Machinery India - 100% Offline Website Mirror & Reconstruction",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve .",
+    "preview": "npx http-server . -p 8080"
+  },
+  "keywords": [
+    "kubota",
+    "offline-website",
+    "website-mirror",
+    "html5",
+    "digital-archive",
+    "offline-portal"
+  ],
+  "author": "Kubota Offline Portal Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/kubota-offline-portal.git"
+  }
+}
