@@ -6,7 +6,10 @@
   "scripts": {
     "start": "npx serve .",
     "dev": "npx serve .",
-    "preview": "npx http-server . -p 8080"
+    "preview": "npx http-server . -p 8080",
+    "build": "node scripts/build-portal.js",
+    "fix-links": "node scripts/fix-links.js",
+    "fetch-images": "node scripts/fetch-images.js && node scripts/fetch-images-fixes.js"
   },
   "keywords": [
     "kubota",
