@@ -27,7 +27,7 @@
 
 This repository provides a complete, high-fidelity offline mirror and portal for **Kubota Agricultural Machinery India** (`https://kubota.escortskubota.com/`).
 
-It enables full local exploration of Kubota's tractor lineups (**MU Series**, **L Series**, **NeoStar Series**), technical specifications, downloadable brochures, and the interactive **3D Virtual Showroom** without requiring an active internet connection or external CDN dependencies.
+It enables full local exploration of Kubota's tractor lineups (**MU Series**, **L Series**, **NeoStar Series**), technical specifications, and downloadable brochures without requiring an active internet connection or external CDN dependencies.
 
 ---
 
@@ -66,12 +66,11 @@ Right-click `index.html` or `START_OFFLINE.html` in Visual Studio Code and selec
 
 ## ✨ Features
 
-- 🌐 **100% Offline Capability**: All HTML pages, stylesheets, JavaScript chunks, fonts, images, videos, and PDF brochures are self-contained locally.
+- 🌐 **100% Offline Capability**: All HTML pages, stylesheets, JavaScript chunks, fonts, images, and PDF brochures are self-contained locally.
 - 🚜 **Complete Tractor Lineup**:
   - **MU Series**: MU4501 (2WD/4WD), MU5502 (2WD/4WD), MU5002, MU4201.
   - **L Series**: L3408, L4508.
   - **NeoStar Series**: A211N, B2441, B2741S.
-- 🕶️ **3D Virtual Showroom**: Interactive 360° panorama tour powered by Pano2VR, WebXR polyfills, and three.js.
 - 📄 **Offline PDF Brochures**: High-resolution specification sheets and catalogs stored under `images/brochure/kubota/`.
 - ⚡ **Optimized Asset Pipeline**: Next.js optimized image URLs (`/_next/image?url=...`) are de-obfuscated to clean relative local paths.
 - 🛡️ **Zero External Tracking**: External tracking scripts, analytics beacons, and tracking pixels are cleanly stripped or neutralized for privacy and offline reliability.
@@ -91,13 +90,11 @@ Right-click `index.html` or `START_OFFLINE.html` in Visual Studio Code and selec
 │   └── pull_request_template.md  # Standard Pull Request template
 ├── assets/
 │   ├── _next/static/             # Next.js stylesheets, media fonts, and JS chunks
-│   ├── static/                   # Localized widget and API helper scripts
-│   └── virtual-showroom/         # Pano2VR, Three.js, and Showroom video media
+│   └── static/                   # Localized widget and API helper scripts
 ├── data/
 │   └── dealer-states.json        # Offline dealer directory dataset
-├── html/                         # 25 fully reconstructed offline HTML pages
+├── html/                         # 24 fully reconstructed offline HTML pages
 │   ├── index.html                # Main English portal
-│   ├── virtual-showroom.html     # 3D interactive virtual showroom
 │   ├── mu-series.html            # MU Series category page
 │   ├── l-series.html             # L Series category page
 │   ├── neostar-series.html       # NeoStar Series category page
@@ -168,7 +165,7 @@ This repository is pre-configured with a GitHub Actions workflow for zero-touch 
 ## 📊 Audit & Quality Assurance
 
 As verified by `_logs/manifest.json` and automated validation tests:
-- **Total HTML Pages**: 25
+- **Total HTML Pages**: 24
 - **Total Local Images**: 361
 - **Total Local Assets**: 63
 - **Missing Images**: `0`

@@ -2,7 +2,7 @@
   "source_website": "https://kubota.escortskubota.com/",
   "offline_root": "START_OFFLINE.html",
   "statistics": {
-    "total_pages": 25,
+    "total_pages": 24,
     "total_images": 363,
     "total_assets": 64,
     "missing_images_count": 0,
@@ -33,8 +33,7 @@
     "html/neostar-series__neostar-b2441n.html",
     "html/neostar-series__neostar-b2441s-narrow.html",
     "html/neostar-series__neostar-b2741s-narrow.html",
-    "html/neostar-series__neostar-b2741s.html",
-    "html/virtual-showroom.html"
+    "html/neostar-series__neostar-b2741s.html"
   ],
   "images": [
     "images/brochure/kubota/A211N-OP.pdf",
