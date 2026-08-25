@@ -6,7 +6,8 @@
   "scripts": {
     "start": "npx serve .",
     "dev": "npx serve .",
-    "preview": "npx http-server . -p 8080"
+    "preview": "npx http-server . -p 8080",
+    "build": "node scripts/rebuild-all.js"
   },
   "keywords": [
     "kubota",
@@ -17,9 +18,5 @@
     "offline-portal"
   ],
   "author": "Kubota Offline Portal Contributors",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/techknowboypr/kubota-offline-portal.git"
-  }
+  "license": "MIT"
 }
